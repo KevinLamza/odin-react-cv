@@ -3,6 +3,8 @@ import './App.css';
 import phone from './assets/phone.svg';
 import email from './assets/email.svg';
 import pin from './assets/pin.svg';
+import education from './assets/education.svg';
+import work from './assets/work.svg';
 
 // function App() {
 //   const [count, setCount] = useState(0);
@@ -38,10 +40,160 @@ import pin from './assets/pin.svg';
 export default function App() {
   return (
     <>
-      <div className="cv">
-        <GeneralInformation />
-        <Education />
-        <PracticalExperience />
+      <div className="gridContainer">
+        <div className="inputs">
+          <Input />
+        </div>
+        <div className="cv">
+          <GeneralInformation />
+          <Education />
+          <PracticalExperience />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function Input() {
+  return (
+    <>
+      <InputGeneralInformation />
+      <InputEducation />
+      <InputPracticalExperience />
+    </>
+  );
+}
+
+function InputGeneralInformation() {
+  return (
+    <>
+      <div className="form">
+        <button></button>
+        <h2>Personal Details</h2>
+        <form>
+          <div className="formField">
+            <label htmlFor="name">Full name: </label>
+            <br />
+            <input type="text" name="name" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="email">Email: </label>
+            <br />
+            <input type="email" name="email" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="tel">Phone number: </label>
+            <br />
+            <input type="tel" name="tel" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="address">Address: </label>
+            <br />
+            <input type="text" name="address" required />
+          </div>
+          {/* <input type="submit" value="Subscribe!" /> */}
+        </form>
+      </div>
+    </>
+  );
+}
+
+function InputEducation() {
+  return (
+    <>
+      <div className="form">
+        <button></button>
+        <h2>
+          <img src={education} />
+          Education
+        </h2>
+        <form>
+          <div className="formField">
+            <label htmlFor="school">School: </label>
+            <br />
+            <input type="text" name="school" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="degree">Degree: </label>
+            <br />
+            <input type="text" name="degree" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="startDate">Start Date: </label>
+            <br />
+            <input type="date" name="startDate" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="endDate">End Date: </label>
+            <br />
+            <input type="date" name="endDate" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="location">Location: </label>
+            <br />
+            <input type="text" name="location" required />
+          </div>
+          {/* <input type="submit" value="Subscribe!" /> */}
+        </form>
+      </div>
+    </>
+  );
+}
+
+function InputPracticalExperience() {
+  return (
+    <>
+      <div className="form">
+        <button></button>
+        <h2>
+          <img src={work} />
+          Practical Experience
+        </h2>
+        <form>
+          <div className="formField">
+            <label htmlFor="company">Company Name: </label>
+            <br />
+            <input type="text" name="company" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="position">Position Title: </label>
+            <br />
+            <input type="text" name="degree" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="startDate">Start Date: </label>
+            <br />
+            <input type="date" name="startDate" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="endDate">End Date: </label>
+            <br />
+            <input type="date" name="endDate" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="location">Location: </label>
+            <br />
+            <input type="text" name="location" required />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="description">Description: </label>
+            <br />
+            <input type="text" name="description" required />
+          </div>
+          {/* <input type="submit" value="Subscribe!" /> */}
+        </form>
       </div>
     </>
   );
@@ -50,7 +202,7 @@ export default function App() {
 function GeneralInformation() {
   return (
     <>
-      <section className="generalInformation">
+      <div className="generalInformation">
         <h1>Kevin Lamza</h1>
         <div className="spanContainer">
           <span>
@@ -66,7 +218,7 @@ function GeneralInformation() {
             Somewhere, Europe
           </span>
         </div>
-      </section>
+      </div>
     </>
   );
 }
@@ -74,7 +226,7 @@ function GeneralInformation() {
 function Education() {
   return (
     <>
-      <section className="education">
+      <div className="education">
         <table>
           <tr>
             <th colSpan="2">
@@ -95,11 +247,11 @@ function Education() {
               09/2006 - 06/2014 <br /> Neunkirchen, GER
             </td>
             <td>
-              Gymnasium am Krebsberg <br /> Abitur: 1,8
+              <b>Gymnasium am Krebsberg</b> <br /> Abitur: 1,8
             </td>
           </tr>
         </table>
-      </section>
+      </div>
     </>
   );
 }

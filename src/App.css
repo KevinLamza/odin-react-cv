@@ -41,12 +41,82 @@
   color: #888;
 } */
 
-.cv {
-  margin: 30px;
-  border: 1px solid black;
+body {
+  background-color: rgb(244, 241, 241);
+  font-size: 18px;
 }
 
-section.generalInformation {
+.gridContainer {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr;
+}
+
+.cv {
+  margin: 30px;
+  /* border: 1px solid black; */
+  background-color: white;
+  box-shadow:
+    5px 5px 5px rgb(0 0 0 / 10%),
+    -5px 5px 5px rgb(0 0 0 / 10%);
+}
+
+.form {
+  margin: 30px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow:
+    5px 5px 5px rgb(0 0 0 / 0.1),
+    -5px -5px -5px rgb(0 0 0 / 0.1);
+}
+
+.formField {
+  margin-bottom: 10px;
+}
+
+.form h2 {
+  margin: 10px 0px;
+  font-size: 26px;
+}
+
+.form label {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.form input {
+  width: 100%;
+  border-style: none;
+  background-color: rgb(244, 241, 241);
+  border-radius: 10px;
+  /* margin: 0px 20px; */
+}
+
+.form img {
+  display: inline;
+  height: 26px;
+  margin-right: 0.25em;
+  vertical-align: text-bottom;
+}
+
+.form button {
+  box-sizing: border-box;
+  height: 10px;
+  width: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 0px 2px 2px 0px;
+  transform: rotate(45deg);
+  background-color: white;
+  padding: 0px;
+  position: relative;
+  float: right;
+}
+
+div.generalInformation {
   background-color: rgb(96, 96, 235);
   color: white;
   padding-top: 26px;
@@ -80,7 +150,11 @@ section.generalInformation {
 .education,
 .practicalExperience {
   margin: 0px 30px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+}
+
+.education {
+  margin-top: 30px;
 }
 
 .education table,
@@ -93,6 +167,10 @@ section.generalInformation {
   font-size: 24px;
   text-align: center;
   background-color: rgb(236, 234, 234);
+}
+
+td {
+  padding-bottom: 20px;
 }
 
 .time {
