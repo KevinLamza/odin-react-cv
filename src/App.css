@@ -40,3 +40,64 @@
 .read-the-docs {
   color: #888;
 } */
+
+.cv {
+  margin: 30px;
+  border: 1px solid black;
+}
+
+section.generalInformation {
+  background-color: rgb(96, 96, 235);
+  color: white;
+  padding-top: 26px;
+}
+
+.generalInformation h1 {
+  font-size: 40px;
+  text-align: center;
+}
+
+.spanContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.generalInformation span {
+  font-size: 20px;
+  margin-bottom: 26px;
+}
+
+.generalInformation img {
+  display: inline;
+  height: 20px;
+  margin: 0px 0.25em;
+  vertical-align: text-bottom;
+  filter: invert(100%) sepia(96%) saturate(15%) hue-rotate(212deg)
+    brightness(104%) contrast(104%);
+}
+
+.education,
+.practicalExperience {
+  margin: 0px 30px;
+  margin-bottom: 30px;
+}
+
+.education table,
+.practicalExperience table {
+  width: 100%;
+}
+
+.education h1,
+.practicalExperience h1 {
+  font-size: 24px;
+  text-align: center;
+  background-color: rgb(236, 234, 234);
+}
+
+.time {
+  box-sizing: content-box;
+  width: 140px;
+  padding-right: 50px;
+  vertical-align: top;
+}
