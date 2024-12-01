@@ -9,34 +9,13 @@ import { defaultUserInfo } from './data';
 import { defaultEducation } from './data';
 import { defaultExperience } from './data';
 
-/* 
-defaultUserInfo -> defaultUserInfo
-defaultEducation -> defaultEducation
-defaultExperience -> defaultExperience
-
-userInfo -> userInfo
-education -> education
-experience -> experience
-
-currentEducation -> currentEducation
-currentExperience -> currentExperience
-
-handleChangeUserInfo -> handleChangeUserInfo
-
-EducationList -> EducationList
-ExperienceList -> ExperienceList
-
-InputUserInfo -> InputUserInfo
-InputExperience -> InputExperience
-*/
-
 export default function App() {
   const [userInfo, setUserInfo] = useState(defaultUserInfo);
 
   const [education, setEducation] = useState(defaultEducation);
   const [experience, setExperience] = useState(defaultExperience);
 
-  const [currentEducation, setCurrentEducation] = useState(1);
+  const [currentEducation, setCurrentEducation] = useState('none'); // 'none', 'empty', 0, 1, 2 ...
   const [currentExperience, setCurrentExperience] = useState(0);
 
   function handleChangeUserInfo(value, field) {
@@ -57,6 +36,31 @@ export default function App() {
     });
   }
 
+  function handleChangeCurrentEducation(index) {
+    let newKey;
+    if (index === 'empty') {
+      let keys = Object.keys(education);
+      if (keys.length === 0) {
+        newKey = 0;
+      } else {
+        newKey = keys[keys.length - 1] + 1;
+      }
+      setEducation({
+        ...education,
+        [newKey]: {
+          school: '',
+          degree: '',
+          startDate: '',
+          endDate: '',
+          location: '',
+        },
+      });
+      setCurrentEducation(newKey);
+      return;
+    }
+    setCurrentEducation(index);
+  }
+
   return (
     <>
       <div className="gridContainer">
@@ -70,6 +74,7 @@ export default function App() {
             handleChangeUserInfo={handleChangeUserInfo}
             handleChangeEducation={handleChangeEducation}
             handleChangeExperience={handleChangeExperience}
+            handleChangeCurrentEducation={handleChangeCurrentEducation}
           />
         </div>
         <div className="cv">
@@ -82,16 +87,30 @@ export default function App() {
   );
 }
 
-function EducationList({ education }) {
+function EducationList({ education, handleChangeCurrentEducation }) {
   const titles = [];
   for (let key in education) {
     titles.push(
-      <button key={'button' + key} className="listButton">
+      <button
+        key={'button' + key}
+        className="listButton"
+        onClick={() => handleChangeCurrentEducation(key)}
+      >
         {education[key]['school']}
       </button>,
     );
   }
-  return <>{titles}</>;
+  return (
+    <>
+      {titles}
+      <button
+        className="listButton createNew"
+        onClick={() => handleChangeCurrentEducation('empty')}
+      >
+        + Create new
+      </button>
+    </>
+  );
 }
 
 function ExperienceList({ experience }) {
@@ -115,6 +134,7 @@ function Input({
   currentExperience,
   handleChangeEducation,
   handleChangeExperience,
+  handleChangeCurrentEducation,
 }) {
   return (
     <>
@@ -127,6 +147,7 @@ function Input({
         education={education}
         currentEducation={currentEducation}
         handleChangeEducation={handleChangeEducation}
+        handleChangeCurrentEducation={handleChangeCurrentEducation}
       />
       <InputExperience
         experience={experience}
@@ -202,10 +223,16 @@ function InputEducation({
   education,
   currentEducation,
   handleChangeEducation,
+  handleChangeCurrentEducation,
 }) {
   let display;
   if (currentEducation === 'none') {
-    display = <EducationList education={education} />;
+    display = (
+      <EducationList
+        education={education}
+        handleChangeCurrentEducation={handleChangeCurrentEducation}
+      />
+    );
   } else {
     display = (
       <>
@@ -275,6 +302,12 @@ function InputEducation({
           </div>
           {/* <input type="submit" value="Subscribe!" /> */}
         </form>
+        <button
+          className="listButton"
+          onClick={() => handleChangeCurrentEducation('none')}
+        >
+          Go back
+        </button>
       </>
     );
   }

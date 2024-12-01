@@ -92,6 +92,11 @@ body {
   color: white;
 }
 
+.createNew {
+  margin-top: 30px;
+  background-color: lightgreen;
+}
+
 div.userInfo {
   background-color: rgb(96, 96, 235);
   color: white;
