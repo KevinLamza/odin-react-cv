@@ -57,11 +57,11 @@ export default function App() {
       setEducation({
         ...education,
         [newKey]: {
-          school: '',
-          degree: '',
-          startDate: '',
-          endDate: '',
-          location: '',
+          school: 'New school',
+          degree: 'My degree',
+          startDate: 'mm/yyyy',
+          endDate: 'mm/yyyy',
+          location: 'My location',
         },
       });
       setCurrentEducation(newKey);
@@ -87,12 +87,12 @@ export default function App() {
       setExperience({
         ...experience,
         [newKey]: {
-          companyName: '',
-          positionTitle: '',
-          startDate: '',
-          endDate: '',
-          location: '',
-          description: '',
+          companyName: 'New company',
+          positionTitle: 'My position',
+          startDate: 'mm/yyyy',
+          endDate: 'mm/yyyy',
+          location: 'My location',
+          description: 'My description',
         },
       });
       setCurrentExperience(newKey);
@@ -333,6 +333,7 @@ function InputEducation({
             <input
               type="text"
               name="school"
+              placeholder="New school"
               value={education[currentEducation]['school']}
               onChange={(e) => handleChangeEducation(e.target.value, 'school')}
               required
@@ -392,20 +393,22 @@ function InputEducation({
           </div>
           {/* <input type="submit" value="Subscribe!" /> */}
         </form>
-        <button
-          className="listButton"
-          onClick={() =>
-            handleChangeCurrentEducation(currentEducation, 'delete')
-          }
-        >
-          Delete
-        </button>
-        <button
-          className="listButton"
-          onClick={() => handleChangeCurrentEducation('none')}
-        >
-          Go back
-        </button>
+        <div className="buttonContainer">
+          <button
+            className="listButton"
+            onClick={() =>
+              handleChangeCurrentEducation(currentEducation, 'delete')
+            }
+          >
+            Delete entry
+          </button>
+          <button
+            className="listButton"
+            onClick={() => handleChangeCurrentEducation('none')}
+          >
+            Close
+          </button>
+        </div>
       </>
     );
   }
@@ -534,20 +537,22 @@ function InputExperience({
           </div>
           {/* <input type="submit" value="Subscribe!" /> */}
         </form>
-        <button
-          className="listButton"
-          onClick={() =>
-            handleChangeCurrentExperience(currentExperience, 'delete')
-          }
-        >
-          Delete
-        </button>
-        <button
-          className="listButton"
-          onClick={() => handleChangeCurrentExperience('none')}
-        >
-          Go back
-        </button>
+        <div className="buttonContainer">
+          <button
+            className="listButton"
+            onClick={() =>
+              handleChangeCurrentExperience(currentExperience, 'delete')
+            }
+          >
+            Delete entry
+          </button>
+          <button
+            className="listButton"
+            onClick={() => handleChangeCurrentExperience('none')}
+          >
+            Close
+          </button>
+        </div>
       </>
     );
   }
