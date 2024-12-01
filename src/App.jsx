@@ -18,6 +18,10 @@ export default function App() {
   const [currentEducation, setCurrentEducation] = useState('none'); // 'none', 'empty', 0, 1, 2 ...
   const [currentExperience, setCurrentExperience] = useState(0);
 
+  const [userInfoFormVisible, setUserInfoFormVisible] = useState(true);
+  const [educationFormVisible, setEducationFormVisible] = useState(true);
+  const [experienceFormVisible, setExperienceFormVisible] = useState(true);
+
   function handleChangeUserInfo(value, field) {
     setUserInfo({ ...userInfo, [field]: value });
   }
@@ -36,8 +40,13 @@ export default function App() {
     });
   }
 
-  function handleChangeCurrentEducation(index) {
+  function handleChangeCurrentEducation(index, operation) {
     let newKey;
+    if (operation === 'delete') {
+      setCurrentEducation('none');
+      delete education[index];
+      return;
+    }
     if (index === 'empty') {
       let keys = Object.keys(education);
       if (keys.length === 0) {
@@ -61,6 +70,37 @@ export default function App() {
     setCurrentEducation(index);
   }
 
+  function handleChangeCurrentExperience(index, operation) {
+    let newKey;
+    if (operation === 'delete') {
+      setCurrentExperience('none');
+      delete experience[index];
+      return;
+    }
+    if (index === 'empty') {
+      let keys = Object.keys(experience);
+      if (keys.length === 0) {
+        newKey = 0;
+      } else {
+        newKey = keys[keys.length - 1] + 1;
+      }
+      setExperience({
+        ...experience,
+        [newKey]: {
+          companyName: '',
+          positionTitle: '',
+          startDate: '',
+          endDate: '',
+          location: '',
+          description: '',
+        },
+      });
+      setCurrentExperience(newKey);
+      return;
+    }
+    setCurrentExperience(index);
+  }
+
   return (
     <>
       <div className="gridContainer">
@@ -75,6 +115,13 @@ export default function App() {
             handleChangeEducation={handleChangeEducation}
             handleChangeExperience={handleChangeExperience}
             handleChangeCurrentEducation={handleChangeCurrentEducation}
+            handleChangeCurrentExperience={handleChangeCurrentExperience}
+            userInfoFormVisible={userInfoFormVisible}
+            educationFormVisible={educationFormVisible}
+            experienceFormVisible={experienceFormVisible}
+            setUserInfoFormVisible={setUserInfoFormVisible}
+            setEducationFormVisible={setEducationFormVisible}
+            setExperienceFormVisible={setExperienceFormVisible}
           />
         </div>
         <div className="cv">
@@ -113,16 +160,30 @@ function EducationList({ education, handleChangeCurrentEducation }) {
   );
 }
 
-function ExperienceList({ experience }) {
+function ExperienceList({ experience, handleChangeCurrentExperience }) {
   const titles = [];
   for (let key in experience) {
     titles.push(
-      <button key={'button' + key} className="listButton">
+      <button
+        key={'button' + key}
+        className="listButton"
+        onClick={() => handleChangeCurrentExperience(key)}
+      >
         {experience[key]['companyName']}
       </button>,
     );
   }
-  return <>{titles}</>;
+  return (
+    <>
+      {titles}
+      <button
+        className="listButton createNew"
+        onClick={() => handleChangeCurrentExperience('empty')}
+      >
+        + Create new
+      </button>
+    </>
+  );
 }
 
 function Input({
@@ -135,6 +196,13 @@ function Input({
   handleChangeEducation,
   handleChangeExperience,
   handleChangeCurrentEducation,
+  handleChangeCurrentExperience,
+  userInfoFormVisible,
+  educationFormVisible,
+  experienceFormVisible,
+  setUserInfoFormVisible,
+  setEducationFormVisible,
+  setExperienceFormVisible,
 }) {
   return (
     <>
@@ -142,78 +210,98 @@ function Input({
         userInfo={userInfo}
         handleChangeUserInfo={handleChangeUserInfo}
         education={education}
+        userInfoFormVisible={userInfoFormVisible}
+        setUserInfoFormVisible={setUserInfoFormVisible}
       />
       <InputEducation
         education={education}
         currentEducation={currentEducation}
         handleChangeEducation={handleChangeEducation}
         handleChangeCurrentEducation={handleChangeCurrentEducation}
+        educationFormVisible={educationFormVisible}
+        setEducationFormVisible={setEducationFormVisible}
       />
       <InputExperience
         experience={experience}
         currentExperience={currentExperience}
         handleChangeExperience={handleChangeExperience}
+        handleChangeCurrentExperience={handleChangeCurrentExperience}
+        experienceFormVisible={experienceFormVisible}
+        setExperienceFormVisible={setExperienceFormVisible}
       />
     </>
   );
 }
 
-function InputUserInfo({ userInfo, handleChangeUserInfo }) {
+function InputUserInfo({
+  userInfo,
+  handleChangeUserInfo,
+  userInfoFormVisible,
+  setUserInfoFormVisible,
+}) {
+  const form = userInfoFormVisible ? (
+    <form>
+      <div className="formField">
+        <label htmlFor="name">Full name: </label>
+        <br />
+        <input
+          type="text"
+          name="name"
+          value={userInfo.name}
+          onChange={(e) => handleChangeUserInfo(e.target.value, 'name')}
+          required
+        />
+        <br />
+      </div>
+      <div className="formField">
+        <label htmlFor="email">Email: </label>
+        <br />
+        <input
+          type="email"
+          name="email"
+          value={userInfo.email}
+          onChange={(e) => handleChangeUserInfo(e.target.value, 'email')}
+          required
+        />
+        <br />
+      </div>
+      <div className="formField">
+        <label htmlFor="tel">Phone number: </label>
+        <br />
+        <input
+          type="tel"
+          name="tel"
+          value={userInfo.phone}
+          onChange={(e) => handleChangeUserInfo(e.target.value, 'phone')}
+          required
+        />
+        <br />
+      </div>
+      <div className="formField">
+        <label htmlFor="address">Address: </label>
+        <br />
+        <input
+          type="text"
+          name="address"
+          value={userInfo.address}
+          onChange={(e) => handleChangeUserInfo(e.target.value, 'address')}
+          required
+        />
+      </div>
+      {/* <input type="submit" value="Subscribe!" /> */}
+    </form>
+  ) : (
+    <></>
+  );
   return (
     <>
       <div className="form">
-        <button className="navButton"></button>
+        <button
+          className="navButton"
+          onClick={() => setUserInfoFormVisible(!userInfoFormVisible)}
+        ></button>
         <h2>Personal Details</h2>
-        <form>
-          <div className="formField">
-            <label htmlFor="name">Full name: </label>
-            <br />
-            <input
-              type="text"
-              name="name"
-              value={userInfo.name}
-              onChange={(e) => handleChangeUserInfo(e.target.value, 'name')}
-              required
-            />
-            <br />
-          </div>
-          <div className="formField">
-            <label htmlFor="email">Email: </label>
-            <br />
-            <input
-              type="email"
-              name="email"
-              value={userInfo.email}
-              onChange={(e) => handleChangeUserInfo(e.target.value, 'email')}
-              required
-            />
-            <br />
-          </div>
-          <div className="formField">
-            <label htmlFor="tel">Phone number: </label>
-            <br />
-            <input
-              type="tel"
-              name="tel"
-              value={userInfo.phone}
-              onChange={(e) => handleChangeUserInfo(e.target.value, 'phone')}
-              required
-            />
-            <br />
-          </div>
-          <div className="formField">
-            <label htmlFor="address">Address: </label>
-            <br />
-            <input
-              type="text"
-              name="address"
-              value={userInfo.address}
-              onChange={(e) => handleChangeUserInfo(e.target.value, 'address')}
-              required
-            />
-          </div>
-          {/* <input type="submit" value="Subscribe!" /> */}
-        </form>
+        {form}
       </div>
     </>
   );
@@ -224,6 +312,8 @@ function InputEducation({
   currentEducation,
   handleChangeEducation,
   handleChangeCurrentEducation,
+  educationFormVisible,
+  setEducationFormVisible,
 }) {
   let display;
   if (currentEducation === 'none') {
@@ -304,6 +394,14 @@ function InputEducation({
         </form>
         <button
           className="listButton"
+          onClick={() =>
+            handleChangeCurrentEducation(currentEducation, 'delete')
+          }
+        >
+          Delete
+        </button>
+        <button
+          className="listButton"
           onClick={() => handleChangeCurrentEducation('none')}
         >
           Go back
@@ -311,10 +409,16 @@ function InputEducation({
       </>
     );
   }
+  if (educationFormVisible === false) {
+    display = <></>;
+  }
   return (
     <>
       <div className="form">
-        <button className={'navButton'}></button>
+        <button
+          className={'navButton'}
+          onClick={() => setEducationFormVisible(!educationFormVisible)}
+        ></button>
         <h2>
           <img src={educationImg} />
           Education
@@ -329,100 +433,134 @@ function InputExperience({
   experience,
   currentExperience,
   handleChangeExperience,
+  handleChangeCurrentExperience,
+  experienceFormVisible,
+  setExperienceFormVisible,
 }) {
   let display;
   if (currentExperience === 'none') {
-    display = <ExperienceList experience={experience} />;
+    display = (
+      <ExperienceList
+        experience={experience}
+        handleChangeCurrentExperience={handleChangeCurrentExperience}
+      />
+    );
   } else {
     display = (
-      <form>
-        <div className="formField">
-          <label htmlFor="company">Company Name: </label>
-          <br />
-          <input
-            type="text"
-            name="company"
-            value={experience[currentExperience]['companyName']}
-            onChange={(e) =>
-              handleChangeExperience(e.target.value, 'companyName')
-            }
-            required
-          />
-          <br />
-        </div>
-        <div className="formField">
-          <label htmlFor="position">Position Title: </label>
-          <br />
-          <input
-            type="text"
-            name="position"
-            value={experience[currentExperience]['positionTitle']}
-            onChange={(e) =>
-              handleChangeExperience(e.target.value, 'positionTitle')
-            }
-            required
-          />
-          <br />
-        </div>
-        <div className="formField">
-          <label htmlFor="startDate">Start Date: </label>
-          <br />
-          <input
-            type="text"
-            name="startDate"
-            value={experience[currentExperience]['startDate']}
-            onChange={(e) =>
-              handleChangeExperience(e.target.value, 'startDate')
-            }
-            required
-          />
-          <br />
-        </div>
-        <div className="formField">
-          <label htmlFor="endDate">End Date: </label>
-          <br />
-          <input
-            type="text"
-            name="endDate"
-            value={experience[currentExperience]['endDate']}
-            onChange={(e) => handleChangeExperience(e.target.value, 'endDate')}
-            required
-          />
-          <br />
-        </div>
-        <div className="formField">
-          <label htmlFor="location">Location: </label>
-          <br />
-          <input
-            type="text"
-            name="location"
-            value={experience[currentExperience]['location']}
-            onChange={(e) => handleChangeExperience(e.target.value, 'location')}
-            required
-          />
-          <br />
-        </div>
-        <div className="formField">
-          <label htmlFor="description">Description: </label>
-          <br />
-          <input
-            type="text"
-            name="description"
-            value={experience[currentExperience]['description']}
-            onChange={(e) =>
-              handleChangeExperience(e.target.value, 'description')
-            }
-            required
-          />
-        </div>
-        {/* <input type="submit" value="Subscribe!" /> */}
-      </form>
+      <>
+        <form>
+          <div className="formField">
+            <label htmlFor="company">Company Name: </label>
+            <br />
+            <input
+              type="text"
+              name="company"
+              value={experience[currentExperience]['companyName']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'companyName')
+              }
+              required
+            />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="position">Position Title: </label>
+            <br />
+            <input
+              type="text"
+              name="position"
+              value={experience[currentExperience]['positionTitle']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'positionTitle')
+              }
+              required
+            />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="startDate">Start Date: </label>
+            <br />
+            <input
+              type="text"
+              name="startDate"
+              value={experience[currentExperience]['startDate']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'startDate')
+              }
+              required
+            />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="endDate">End Date: </label>
+            <br />
+            <input
+              type="text"
+              name="endDate"
+              value={experience[currentExperience]['endDate']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'endDate')
+              }
+              required
+            />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="location">Location: </label>
+            <br />
+            <input
+              type="text"
+              name="location"
+              value={experience[currentExperience]['location']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'location')
+              }
+              required
+            />
+            <br />
+          </div>
+          <div className="formField">
+            <label htmlFor="description">Description: </label>
+            <br />
+            <input
+              type="text"
+              name="description"
+              value={experience[currentExperience]['description']}
+              onChange={(e) =>
+                handleChangeExperience(e.target.value, 'description')
+              }
+              required
+            />
+          </div>
+          {/* <input type="submit" value="Subscribe!" /> */}
+        </form>
+        <button
+          className="listButton"
+          onClick={() =>
+            handleChangeCurrentExperience(currentExperience, 'delete')
+          }
+        >
+          Delete
+        </button>
+        <button
+          className="listButton"
+          onClick={() => handleChangeCurrentExperience('none')}
+        >
+          Go back
+        </button>
+      </>
     );
+  }
+  if (experienceFormVisible === false) {
+    display = <></>;
   }
   return (
     <>
       <div className="form">
-        <button className={'navButton'}></button>
+        <button
+          className={'navButton'}
+          onClick={() => setExperienceFormVisible(!experienceFormVisible)}
+        ></button>
         <h2>
           <img src={work} />
           Practical Experience

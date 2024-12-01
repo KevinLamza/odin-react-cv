@@ -1,6 +1,7 @@
 body {
   background-color: rgb(244, 241, 241);
   font-size: 18px;
+  padding-left: calc(100vw - 100%);
 }
 
 .gridContainer {
@@ -73,7 +74,8 @@ body {
   float: right;
 }
 
-.navButton:hover {
+.navButton:hover,
+.navButton:focus {
   border-bottom-width: 3px;
   border-right-width: 3px;
   width: 15px;
@@ -85,9 +87,12 @@ body {
   background-color: white;
   margin-bottom: 10px;
   display: block;
+  min-width: 28px;
+  min-height: 32px;
 }
 
-.listButton:hover {
+.listButton:hover,
+.listButton:focus {
   background-color: rgb(96, 96, 235);
   color: white;
 }
@@ -157,7 +162,17 @@ td {
 
 .time {
   box-sizing: content-box;
-  max-width: 140px;
+  width: 180px;
   padding-right: 50px;
   vertical-align: top;
+}
+
+@media (max-width: 800px) {
+  .gridContainer {
+    max-width: 1300px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
 }
